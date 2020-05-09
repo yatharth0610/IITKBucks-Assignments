@@ -1,6 +1,6 @@
 This folder contains three programs. One for generation of key-pair, one for creating the signature and one for verifying the same. 
 
-I have already ran the keygen.js to generate the keypairs which are automatically stored in public.pem and private.pem files after their generation.
+I have already run the keygen.js to generate the keypairs which are automatically stored in public.pem and private.pem files after their generation.
 
 So the example of encoded texts i am providing will only work with this pre-generated pair otherwise as the process of key generation generates a new pair everytime we would have different signatures each time. 
 
@@ -9,7 +9,7 @@ Correct signature (Encrypted for text "Yatharth" using private Key): a1a1cf976c6
 Incorrect Signature (Encrypted for text "yatharth"):
 949981f54e7ccd4076d3ad71985cd37f1af13504a0f276b948f0799dc8f21236de5304c6bed5f7de96119b4d0311592f558f469155f2b9e3f8a9d8e0f0bd315b7f48a9eadd63e8e6c395f8c33d3e19fddbe54bd44f5cb1bf9f9baa3da71c704362cb0341bbfa95b74ac84df3581edf56a3aeb987079b860f92e1fd6b4da4a2f404d3396977b08d2baef55c65ac4136bfc97c241650d354d5e164f79b852494c6940ec2e6663d6f09bbd9bbcc0e8c97144b705e0d59d459f4594d64d6afdcdb79384c54c0fd31d363fac289a508f084ff5f0cf9389975241437aa83c56a4d62292e575f71444f27be34706991d84edac6726930bc952f7bac59a9d4dd790d4903
 
-##Verification of signature 
+## Verification of signature 
 
 ```
 node check.js
