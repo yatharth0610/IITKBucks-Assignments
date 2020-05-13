@@ -12,7 +12,7 @@ var encrypted = '';
 var unencrypted = '';
 
 rl.question('Enter the path of the file: ', str => {
-    pubKey = fs.readFileSync("public.pem");
+    pubKey = fs.readFileSync(str);
     rl.question('Enter the encrypted text: ', str => {
         encrypted = str;
         rl.question('Enter the unencrypted text: ', str => {
