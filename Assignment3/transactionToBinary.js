@@ -66,6 +66,10 @@ const q1 = () => {
     return new Promise((resolve,reject) => {
         rl.question('Enter the number of inputs: ', num => {
             numInputs = Number(num);
+            if (Number(num) < 0) {
+                console.log("Invalid Number");
+                numInputs = 0;
+            }
             resolve();
         });
     });
@@ -84,6 +88,10 @@ const q3 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the output Index: ', num => {
             index = Number(num);
+            if (Number(num) < 0) {
+                console.log("Invalid Number");
+                index = 0;
+            }
             resolve();
         });
     });
@@ -93,6 +101,10 @@ const q4 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the length of signature: ', len => {
             sign_length = Number(len);
+            if (sign_length < 0) {
+                console.log("Invalid Input");
+                sign_length = 0;
+            }
             resolve();
         });
     });
@@ -111,6 +123,10 @@ const q6 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the number of outputs: ', num => {
             numOutputs = Number(num);
+            if (numOutputs < 0) {
+                console.log("Invalid Input");
+                numOutputs = 0;
+            }
             resolve();
         });
     });
@@ -120,6 +136,10 @@ const q7 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the number of coins: ', num => {
             coins = Number(num);
+            if (coins < 0) {
+                console.log("Invalid Input");
+                coins = 0;
+            }
             resolve();
         });
     });
@@ -129,6 +149,10 @@ const q8 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the length of public key: ', num => {
             pubkey_len = Number(num);
+            if (pubkey_len < 0) {
+                console.log("Invalid Input");
+                pubkey_len = 0;
+            }
             resolve();
         });
     });
