@@ -8,11 +8,8 @@ const rl = readline.createInterface({
 });
 
 rl.question("Enter the path of the file: ", path => {
-    let data = []
-    let temp = fs.readFileSync(path);
-    temp = temp.toString('utf8');
-    data = temp.split`,`.map(x => +x);
-    getDetails(data);
+    let str = fs.readFileSync(path);
+    getDetails(str);
     rl.close();
 })
 
@@ -33,58 +30,64 @@ class Output {
     }
 }
 
-function intFromBytes(x) {
-    let val = 0;
-    for (var i = 0; i < x.length; i++) {
-        val += x[i];
-        if (i < x.length-1) {
-            val = val << 8;
+function getInt(str, start, end)
+{
+    let size = end - start;
+    if(size === 4)
+    {
+        let ans = 0;
+        for(let i = 0; i < size; ++i)
+        {
+            ans = ans << 8;
+            ans += str[i + start];
         }
+        return ans;
     }
-    return val;
+
+    else
+    {
+        let ans = 0n;
+        for (let i = 0; i < size; ++i)
+        {
+            ans = ans * 256n;
+            ans += BigInt(str[i+start])
+        }
+        return ans;
+    }
 }
 
-function getDetails (data) {
-    const transactionID_curr = crypto.createHash('sha256').update(Buffer.from(data)).digest('hex');
-    let Inputs = []
+function getDetails (str) {
+    const transactionID_curr = crypto.createHash('sha256').update(str).digest('hex');
+    let Inputs = [];
     let Outputs = [];
     let curr = 0;
 
-    let arr = data.slice(0,4);
+    const numInputs = getInt(str, 0, 4);
     curr = curr + 4;
-    const numInputs = intFromBytes(arr);
 
     for (let i = 0; i < numInputs; i++) {
-        let arr = data.slice(curr, curr + 32);
-        curr = curr + 32;
-        let transactionID = new Buffer.from(arr).toString('hex');
-        arr = data.slice(curr, curr+4);
-        curr = curr + 4;
-        let index = intFromBytes(arr);
-        arr = data.slice(curr, curr + 4);
-        curr = curr + 4;
-        let sign_length = intFromBytes(arr);
-        arr = data.slice(curr, curr+sign_length);
-        curr = curr + sign_length;
-        let signature = new Buffer.from(arr).toString('hex');
+        let transactionID = str.toString("hex", curr, curr+32);
+        curr += 32;
+        let index = getInt(str, curr, curr+4);
+        curr += 4;
+        let sign_length = getInt(str, curr, curr+4);
+        curr += 4;
+        let signature = str.toString("hex", curr, curr + sign_length);
+        curr += sign_length;
         let In = new Input(transactionID, index, sign_length, signature);
         Inputs.push(In);
     }
 
-    arr = data.slice(curr, curr+4);
-    curr = curr+4
-    const numOutputs = intFromBytes(arr);
+    const numOutputs = getInt(str, curr, curr+4);
+    curr += 4;
 
     for (let i = 0; i < numOutputs; i++){
-        let arr = data.slice(curr, curr + 8);
-        curr = curr + 8;
-        let coins = intFromBytes(arr);
-        arr = data.slice(curr, curr+4);
-        curr = curr+4;
-        let pubkey_len = intFromBytes(arr);
-        arr = data.slice(curr, curr + pubkey_len);
-        curr = curr + pubkey_len;
-        let pub_key = new Buffer.from(arr).toString();
+        let coins = getInt(str, curr, curr+8);
+        curr += 8;
+        let pubkey_len = getInt(str, curr, curr+4);
+        curr += 4;
+        let pub_key = str.toString("utf-8", curr, curr + pubkey_len);
+        curr += pubkey_len;
         let Out = new Output(coins, pubkey_len, pub_key);
         Outputs.push(Out);
     }
