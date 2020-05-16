@@ -218,7 +218,8 @@ function transactionToByteArray (transaction) {
     }
     console.log(data);
     let hashed = crypto.createHash('sha256').update(Buffer.from(data)).digest('hex');
-    fs.writeFileSync(hashed + '.dat', data);
+    let new_data = new Uint8Array(Buffer.from(data));
+    fs.writeFileSync(hashed + '.dat', new_data);
 }
 
 
