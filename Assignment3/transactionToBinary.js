@@ -41,13 +41,12 @@ function toBytesInt32 (num) {
 }
 
 function toBytesInt64 (num){
-    var bytes = [];
-    var i = 8;
-    do {
-    bytes[--i] = num & (255);
-    num = num>>8;
-    } while (i)
-    return bytes;
+    let arr = new Uint8Array(8);
+    for (let i = 0; i < 8; i++) {
+        arr[7-i] = parseInt(num%256n);
+        num = num/256n;
+    }
+    return arr;
 }
 
 var numInputs = 0;
@@ -97,7 +96,7 @@ const q3 = () => {
     });
 }
 
-const q4 = () => {
+/*const q4 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the length of signature: ', len => {
             sign_length = Number(len);
@@ -108,7 +107,7 @@ const q4 = () => {
             resolve();
         });
     });
-}
+}*/
 
 const q5 = () => {
     return new Promise((resolve, reject) => {
@@ -145,7 +144,7 @@ const q7 = () => {
     });
 }
 
-const q8 = () => {
+/*const q8 = () => {
     return new Promise((resolve, reject) => {
         rl.question('Enter the length of public key: ', num => {
             pubkey_len = Number(num);
@@ -156,7 +155,7 @@ const q8 = () => {
             resolve();
         });
     });
-}
+}*/
 
 const q9 = () => {
     return new Promise((resolve, reject) => {
@@ -190,7 +189,7 @@ function transactionToByteArray (transaction) {
         data = data.concat(temp);
         let str2 = transaction.Inputs[i].sign;
         temp = [];
-        temp = new Uint8Array(Buffer.from(str1, 'hex'));
+        temp = new Uint8Array(Buffer.from(str2, 'hex'));
         temp = [...temp];
         data = data.concat(temp);
     }
@@ -202,7 +201,7 @@ function transactionToByteArray (transaction) {
     for (let i = 0; i < transaction.numOutputs; i++){
         let arr = [];
         let num1 = transaction.Outputs[i].coins;
-        arr = new Uint16Array(arr.concat(toBytesInt64(num1)));
+        arr = new Uint8Array(arr.concat(toBytesInt64(num1)));
         arr = [...arr];
         data = data.concat(arr);
         let num2 = transaction.Outputs[i].pubkey_len;
@@ -217,8 +216,8 @@ function transactionToByteArray (transaction) {
         data = data.concat(arr);
     }
     console.log(data);
-    let hashed = crypto.createHash('sha256').update(Buffer.from(data)).digest('hex');
     let new_data = new Uint8Array(Buffer.from(data));
+    let hashed = crypto.createHash('sha256').update(Buffer.from(data)).digest('hex');
     fs.writeFileSync(hashed + '.dat', new_data);
 }
 
@@ -228,17 +227,17 @@ const main = async () => {
     for (let i = 1; i <= numInputs; i++) {
         await q2();
         await q3();
-        await q4();
+        //await q4();
         await q5();
-        var In = new Input (transactionID, index, sign_length, sign);
+        var In = new Input (transactionID, index, sign.length/2, sign);
         Inputs.push(In);
     }
     await q6();
     for (let i = 1; i <= numOutputs; i++) {
         await q7();
-        await q8();
+        //await q8();
         await q9();
-        var out = new Output (coins, pubkey_len, pubkey);
+        var out = new Output (coins, pubkey.length/2, pubkey);
         Outputs.push(out);
     }
     rl.close();
