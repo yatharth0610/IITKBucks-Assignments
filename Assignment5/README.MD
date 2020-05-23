@@ -18,7 +18,7 @@ node blockmining.js
 3. Info about the block header which contains the nonce and timestamp
 4. Time taken
 
-I ran the program three times and got the following results :
+I ran the program multiple times and got the following results :
 
 ```
 Found Hash : 00000007c0fd95bda2b1fffba45ee62b664a1d62289a05c258ac986ee5e07017
