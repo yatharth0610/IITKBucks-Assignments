@@ -13,9 +13,10 @@ node blockmining.js
 4. Path of the file containing transaction body
  
 # Output
-1. Found Hash
-2. Info about the block header which contains the nonce and timestamp
-3. Time taken
+1. Current value of nonce and corresponding hash after every 1000000 executions of the code.
+2. Found Hash
+3. Info about the block header which contains the nonce and timestamp
+4. Time taken
 
 I ran the program three times and got the following results :
 
