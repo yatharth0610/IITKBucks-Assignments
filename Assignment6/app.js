@@ -8,7 +8,7 @@ app.use (bodyParser.urlencoded({extended: true}));
 app.use (bodyParser.json());
 
 let map = {};
-let peers = ["https://93462530.ngrok.io", "https://4f680547.ngrok.io"];
+let peers = ["https://98f70a970251.ngrok.io", "http://2382d24326e9.ngrok.io", "http://0b7c83529168.ngrok.io"];
 
 app.post ('/add', function(req, res){
     const key = req.body.key;
